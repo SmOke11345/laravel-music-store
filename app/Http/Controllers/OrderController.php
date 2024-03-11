@@ -36,17 +36,43 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         if (auth()->check()) {
-            $newRequest = new Order([
-                'catalog_id' => $request->catalog_id,
-                'user_id' => auth()->user()->id,
-            ]);
 
-            $newRequest->save();
+            $userId = auth()->user()->id;
+            $requestValues = Order::where('catalog_id', $request->catalog_id)->where('user_id', $userId)->first();
+
+            if ($requestValues) {
+                $requestValues->count += 1;
+                $requestValues->save();
+            } else {
+                $newRequest = new Order([
+                    'catalog_id' => $request->catalog_id,
+                    'user_id' => auth()->user()->id,
+                    'count' => 1
+                ]);
+                $newRequest->save();
+            }
 
             return redirect('cart');
         }
 
         return redirect('login');
+    }
+
+    public function decrementItem(Request $request)
+    {
+        $userId = auth()->user()->id;
+        $requestValues = Order::where('catalog_id', $request->catalog_id)->where('user_id', $userId)->first();
+
+        if ($requestValues) {
+            $requestValues->count -= 1;
+            $requestValues->save();
+
+            if ($requestValues->count === 0) {
+                Order::destroy($requestValues->id);
+            }
+        }
+
+        return redirect('cart');
     }
 
     /**

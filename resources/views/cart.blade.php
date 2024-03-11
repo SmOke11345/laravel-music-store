@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('content')
-
     <section class="section">
         <div class="container">
             <div class="row">
@@ -22,7 +20,21 @@
                                 <h5 class="card-title">{{$data['catalog']['name']}}</h5>
                                 <p class="card-text">{{$data['catalog']['description']}}</p>
                                 <p class="card-text">Тип:{{$data['catalog']['category']['name']}}</p>
-                                <p class="card-text">{{$data['catalog']['price']}} руб.</p>
+                                <p class="card-text">{{$data['catalog']['price'] * $data['count']}} руб.</p>
+                                <div class="wrapper d-flex justify-content-between w-100">
+                                    <form action="{{ route('remove-to-cart') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{$data['id']}}">
+                                        <input type="hidden" name="catalog_id" value="{{$data['catalog_id']}}">
+                                        <button type="submit" class="btn btn-danger w-100">-</button>
+                                    </form>
+                                    <p class="card-text mx-2">{{$data['count']}} шт</p>
+                                    <form action="{{ route('add-to-cart') }}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="catalog_id" value="{{$data['catalog_id']}}">
+                                        <button type="submit" class="btn btn-primary w-100 ">+</button>
+                                    </form>
+                                </div>
                                 <div class="wrapper d-flex">
                                     <form action="{{ route('delete-from-cart', $data['id']) }}" method="get"
                                           class="w-75">
@@ -44,5 +56,4 @@
             </div>
         </div>
     </section>
-
 @endsection

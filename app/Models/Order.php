@@ -12,6 +12,7 @@ class Order extends Model
     protected $fillable = [
         'catalog_id',
         'user_id',
+        'count'
     ];
 
     public function catalog()

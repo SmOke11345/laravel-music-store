@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\CatalogController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/cart', [OrderController::class, 'index'])->name('cart');
     Route::post('/add-to-cart', [OrderController::class, 'store'])->name('add-to-cart');
     Route::get('/delete-from-cart/{id}', [OrderController::class, 'destroy'])->name('delete-from-cart');
+    Route::post('/remove-to-cart', [OrderController::class, 'decrementItem'])->name('remove-to-cart');
 });
 
 Route::middleware('admin')->group(function () {

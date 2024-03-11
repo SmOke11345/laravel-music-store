@@ -39,7 +39,7 @@
                 <ul class="navbar-nav ms-auto">
                     @if(!\Illuminate\Support\Facades\Auth::check() || !\Illuminate\Support\Facades\Auth::user()->isAdmin())
                     @else
-                        <a class="navbar-brand" href="{{ url('/dashboard') }}">Админка</a>
+                        <a class="navbar-brand" href="{{ url('/dashboard') }}">Админ панель</a>
                     @endif
                     <a class="navbar-brand" href="{{ url('/cart') }}">Корзина</a>
                     <!-- Authentication Links -->
